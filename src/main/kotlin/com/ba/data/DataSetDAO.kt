@@ -3,6 +3,7 @@ package com.ba.data
 import com.ba.data.DatabaseFactory.dbQuery
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import javax.xml.crypto.Data
 
 class DataSetDAO {
     /*   private fun resultRowToDataSet(row: ResultRow) = DataSet(
@@ -37,6 +38,12 @@ class DataSetDAO {
             DataSets.userId eq userId
         }
         statement.count().toInt()
+    }
+
+    suspend fun getGEbyUserId(userId: Int): List<String> = dbQuery {
+        val statement = DataSets..select(DataSets.gamifiedElements) {
+            DataSets.userId eq userId
+        }
     }
     /*
         suspend fun editDataSet(id:Long, DataSet: DataSetManipulationItem): Boolean = dbQuery {

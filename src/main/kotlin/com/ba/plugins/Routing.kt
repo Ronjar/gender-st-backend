@@ -18,22 +18,24 @@ fun Application.configureRouting() {
             defaultPage = "index.html"
             ignoreFiles { it.endsWith(".txt") }
         }
-        get("/adduser") {
+        post("/adduser") {
             val user = call.receive<User>()
-            call.respond(UserResponse(userDAO.addUser(user), "pblan"))
+            call.respond(UserResponse(userDAO.addUser(user), getRandomGE()))
         }
         post("/addset") {
             val dataSet = call.receive<DataSet>()
             dataSetDAO.addDataSet(dataSet)
-            if(dataSetDAO.getNumberOfSets(dataSet.userId) < 3){
-                call.respond("next")
-            } else {
-                call.respond("finished")
-            }
-            call.respond(dataSetDAO.addDataSet(dataSet))
+            val count = dataSetDAO.getNumberOfSets(dataSet.userId)
+            call.respond(if(count < 3 ) {count} else "finished")
         }
     }
 }
 
+fun getRandomGE(blockedSequences: String): String {
+    val options = mutableListOf("p", "b", "l", "a", "n", "pbla", "pblan", "")
+    options.removeIf { blockedSequences.contains(it) }
+    return options.random()
+}
+
 @Serializable
-data class UserResponse(val id: Int, val gamifiedElements: String)
+data class UserResponse(val userId: Int, val gamifiedElements: String)
