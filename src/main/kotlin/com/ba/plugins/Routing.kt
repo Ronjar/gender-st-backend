@@ -20,7 +20,7 @@ fun Application.configureRouting() {
         }
         post("/adduser") {
             val user = call.receive<User>()
-            call.respond(UserResponse(userDAO.addUser(user), getRandomGE()))
+            call.respond(UserResponse(userDAO.addUser(user), /*getRandomGE()*/ "pblan"))
         }
         post("/addset") {
             val dataSet = call.receive<DataSet>()

@@ -41,10 +41,12 @@ class DataSetDAO {
     }
 
     suspend fun getGEbyUserId(userId: Int): List<String> = dbQuery {
-        val statement = DataSets..select(DataSets.gamifiedElements) {
-            DataSets.userId eq userId
-        }
+        DataSets
+            .slice(DataSets.gamifiedElements)
+            .select { DataSets.userId eq userId }
+            .map { it[DataSets.gamifiedElements] }
     }
+
     /*
         suspend fun editDataSet(id:Long, DataSet: DataSetManipulationItem): Boolean = dbQuery {
             DataSets.update({ DataSets.id eq id }) {
