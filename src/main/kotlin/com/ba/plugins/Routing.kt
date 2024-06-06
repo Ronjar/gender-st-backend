@@ -26,12 +26,13 @@ fun Application.configureRouting() {
             val dataSet = call.receive<DataSet>()
             dataSetDAO.addDataSet(dataSet)
             val count = dataSetDAO.getNumberOfSets(dataSet.userId)
-            call.respond(if(count < 3 ) {count} else "finished")
+            call.respond(DataSetResponse(count, getRandomGE(dataSetDAO.getGEbyUserId(dataSet.userId))))
+            //call.respond(if(count < 3 ) {count} else "finished")
         }
     }
 }
 
-fun getRandomGE(blockedSequences: String): String {
+fun getRandomGE(blockedSequences: List<String>): String {
     val options = mutableListOf("p", "b", "l", "a", "n", "pbla", "pblan", "")
     options.removeIf { blockedSequences.contains(it) }
     return options.random()
@@ -39,3 +40,6 @@ fun getRandomGE(blockedSequences: String): String {
 
 @Serializable
 data class UserResponse(val userId: Int, val gamifiedElements: String)
+
+@Serializable
+data class DataSetResponse(val round: Int, val gamifiedElements: String)

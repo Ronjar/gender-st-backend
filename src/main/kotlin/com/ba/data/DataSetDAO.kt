@@ -26,8 +26,8 @@ class DataSetDAO {
         val insertStatement = DataSets.insert {
             it[userId] = dataSet.userId
             it[gamifiedElements] = dataSet.gamifiedElements
-            it[preTest] = dataSet.preTest.joinToString("|")
-            it[postTest] = dataSet.postTest.joinToString("|")
+            it[preTest] = dataSet.pretestAnswers.joinToString("|")
+            it[postTest] = dataSet.posttestAnswers.joinToString("|")
             it[questions] = dataSet.questions.map { bool -> if (bool) 1 else 0  }.joinToString("|")
         }
         insertStatement.insertedCount > 0
