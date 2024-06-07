@@ -1,10 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Test</title>
-</head>
-<body>
-<h1>Hello World</h1>
-</body>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link rel="modulepreload" href="/_app/immutable/entry/start.DgYkBWSY.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/entry.eBlFtu3z.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/scheduler.1dHxLCaq.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index.BrAEm8Ez.js">
+		<link rel="modulepreload" href="/_app/immutable/entry/app.K2SskQe-.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index.BwwAWpwv.js">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">
+			<script>
+				{
+					__sveltekit_1dqa4cf = {
+						base: ""
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("/_app/immutable/entry/start.DgYkBWSY.js"),
+						import("/_app/immutable/entry/app.K2SskQe-.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+				}
+			</script>
+		</div>
+	</body>
 </html>

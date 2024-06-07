@@ -1,0 +1,12 @@
+name: gender-st
+services:
+  server:
+    container_name: gender-st
+    volumes:
+      - /data/:/data/
+    restart: always
+    ports:
+      - 43000:80
+    image: ghcr.io/ronjar/gender-st:latest
+volumes:
+  data:
