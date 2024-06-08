@@ -1,34 +1,34 @@
 package com.ba.data
 
 import com.ba.data.DatabaseFactory.dbQuery
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import javax.xml.crypto.Data
 
 class DataSetDAO {
-    /*   private fun resultRowToDataSet(row: ResultRow) = DataSet(
-           id = row[DataSets.id],
-           title = row[DataSets.title],
-           content = row[DataSets.content]
-       )
-       suspend fun getAllDataSets(): List<DataSet> = dbQuery {
-           DataSets.selectAll().map(::resultRowToDataSet)
-       }
+    private fun resultRowToDataSet(row: ResultRow) = DataSet(
+        userId = row[DataSets.userId],
+        gamifiedElements = row[DataSets.gamifiedElements],
+        pretestAnswers = row[DataSets.pretestAnswers].split("|").map { it.trim().toInt() }.toTypedArray(),
+        posttestAnswers = row[DataSets.posttestAnswers].split("|").map { it.trim().toInt() }.toTypedArray(),
+        questions = row[DataSets.questions].split("|").map { it.trim().toInt() == 0 }.toTypedArray(),
+        answerTime = row[DataSets.answerTime].split("|").map { it.trim().toInt() }.toTypedArray(),
+    )
 
-       suspend fun getDataSet(id: Long): DataSet? = dbQuery {
-           DataSets
-               .select { DataSets.id eq id }
-               .map(::resultRowToDataSet)
-               .singleOrNull()
-       }*/
+    suspend fun getAllDataSets(): List<DataSet> = dbQuery {
+        DataSets.selectAll().map(::resultRowToDataSet)
+    }
 
     suspend fun addDataSet(dataSet: DataSet): Boolean = dbQuery {
         val insertStatement = DataSets.insert {
             it[userId] = dataSet.userId
             it[gamifiedElements] = dataSet.gamifiedElements
-            it[preTest] = dataSet.pretestAnswers.joinToString("|")
-            it[postTest] = dataSet.posttestAnswers.joinToString("|")
-            it[questions] = dataSet.questions.map { bool -> if (bool) 1 else 0  }.joinToString("|")
+            it[pretestAnswers] = dataSet.pretestAnswers.joinToString("|")
+            it[posttestAnswers] = dataSet.posttestAnswers.joinToString("|")
+            it[questions] = dataSet.questions.map { bool -> if (bool) 1 else 0 }.joinToString("|")
+            it[answerTime] = dataSet.answerTime.joinToString("|")
         }
         insertStatement.insertedCount > 0
     }
@@ -46,18 +46,6 @@ class DataSetDAO {
             .select { DataSets.userId eq userId }
             .map { it[DataSets.gamifiedElements] }
     }
-
-    /*
-        suspend fun editDataSet(id:Long, DataSet: DataSetManipulationItem): Boolean = dbQuery {
-            DataSets.update({ DataSets.id eq id }) {
-                it[title] = DataSet.title
-                it[content] = DataSet.content
-            } > 0
-        }
-    
-        suspend fun deleteDataSet(id: Long): Boolean = dbQuery {
-            DataSets.deleteWhere { DataSets.id eq id } > 0
-        }*/
 }
 
 val dataSetDAO: DataSetDAO = DataSetDAO()

@@ -25,7 +25,7 @@ application {
 
 tasks {
     named<ShadowJar>("shadowJar") {
-        archiveFileName.set("pastry-server.jar")
+        archiveFileName.set("gender-st.jar")
         destinationDirectory.set(file("."))
         manifest {
             attributes["Build-Timestamp"] = Date().time
@@ -46,7 +46,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-    implementation("com.h2database:h2:$h2_version")
+    implementation("com.h2database:h2:2.2.224")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-cors")
