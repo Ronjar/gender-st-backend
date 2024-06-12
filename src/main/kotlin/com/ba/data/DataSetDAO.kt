@@ -11,8 +11,9 @@ class DataSetDAO {
     private fun resultRowToDataSet(row: ResultRow) = DataSet(
         userId = row[DataSets.userId],
         gamifiedElements = row[DataSets.gamifiedElements],
-        pretestAnswers = row[DataSets.pretestAnswers].split("|").map { it.trim().toInt() }.toTypedArray(),
-        posttestAnswers = row[DataSets.posttestAnswers].split("|").map { it.trim().toInt() }.toTypedArray(),
+        stai = row[DataSets.staiTest].split("|").map { it.trim().toInt() }.toTypedArray(),
+        ngse = row[DataSets.ngseTest].split("|").map { it.trim().toInt() }.toTypedArray(),
+        sims = row[DataSets.simsTest].split("|").map { it.trim().toInt() }.toTypedArray(),
         questions = row[DataSets.questions].split("|").map { it.trim().toInt() == 0 }.toTypedArray(),
         answerTime = row[DataSets.answerTime].split("|").map { it.trim().toInt() }.toTypedArray(),
     )
@@ -25,8 +26,9 @@ class DataSetDAO {
         val insertStatement = DataSets.insert {
             it[userId] = dataSet.userId
             it[gamifiedElements] = dataSet.gamifiedElements
-            it[pretestAnswers] = dataSet.pretestAnswers.joinToString("|")
-            it[posttestAnswers] = dataSet.posttestAnswers.joinToString("|")
+            it[staiTest] = dataSet.stai.joinToString("|")
+            it[ngseTest] = dataSet.ngse.joinToString("|")
+            it[simsTest] = dataSet.sims.joinToString("|")
             it[questions] = dataSet.questions.map { bool -> if (bool) 1 else 0 }.joinToString("|")
             it[answerTime] = dataSet.answerTime.joinToString("|")
         }
@@ -38,13 +40,6 @@ class DataSetDAO {
             DataSets.userId eq userId
         }
         statement.count().toInt()
-    }
-
-    suspend fun getGEbyUserId(userId: Int): List<String> = dbQuery {
-        DataSets
-            .slice(DataSets.gamifiedElements)
-            .select { DataSets.userId eq userId }
-            .map { it[DataSets.gamifiedElements] }
     }
 }
 

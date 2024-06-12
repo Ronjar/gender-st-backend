@@ -2,6 +2,7 @@ package com.ba.data
 
 import com.ba.data.DatabaseFactory.dbQuery
 import com.ba.data.Users.age
+import com.ba.data.Users.deletionCode
 import com.ba.data.Users.gender
 import com.ba.data.Users.studyProgram
 import org.jetbrains.exposed.sql.ResultRow
@@ -12,7 +13,8 @@ class UserDAO {
     private fun resultRowToUser(row: ResultRow) = User(
         gender = row[gender],
         age = row[age],
-        studyProgram = row[studyProgram]
+        studyProgram = row[studyProgram],
+        deletionCode = row[deletionCode]
     )
 
     suspend fun getAllUsers(): List<User> = dbQuery {
@@ -24,6 +26,7 @@ class UserDAO {
             it[age] = user.age
             it[gender] = user.gender
             it[studyProgram] = user.studyProgram
+            it[deletionCode] = user.deletionCode
         }
         insertStatement get Users.id
     }
