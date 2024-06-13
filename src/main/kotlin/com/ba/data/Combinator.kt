@@ -12,17 +12,20 @@ class Combinator {
 
     private fun generateItems(): MutableList<List<String>> {
         val items = mutableListOf("p", "b", "l", "a", "n", "pbla", "pblan", "")
-        val itemsList = mutableListOf<String>()
+        var itemsList = mutableListOf<String>()
         val returnList = mutableListOf<List<String>>()
         var flag: Boolean
         do {
             flag = false
+            itemsList.clear()
+            returnList.clear()
             repeat(3) {
                 itemsList.addAll(items)
                 itemsList.shuffle()
             }
             while (itemsList.isNotEmpty()) {
                 val newItems = itemsList.take(3)
+                itemsList = itemsList.drop(3).toMutableList()
                 if (newItems.distinct().size ==3){
                     returnList.add(newItems)
                 } else {
