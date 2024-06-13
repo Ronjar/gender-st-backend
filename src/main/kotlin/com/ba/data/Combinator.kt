@@ -3,7 +3,7 @@ package com.ba.data
 class Combinator {
     private var items = generateItems()
     fun next(): List<String> {
-        val result = items.first()
+        val result = items.removeFirst()
         if (items.isEmpty()) {
             items = generateItems()
         }

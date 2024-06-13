@@ -12,7 +12,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build the pastry Docker image
+      - name: Build the gender-st Docker image
         run: |
           docker build . --tag ghcr.io/ronjar/gender-st:latest
           docker push ghcr.io/ronjar/gender-st:latest
