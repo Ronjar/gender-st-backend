@@ -4,6 +4,7 @@ import com.ba.data.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
+import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
@@ -21,6 +22,7 @@ fun Application.configureRouting() {
         }
         post("/adduser") {
             val user = call.receive<User>()
+            user.ipAdress = call.request.origin.remoteAddress
             call.respond(UserResponse(userDAO.addUser(user), combinator.next()))
         }
         post("/addset") {
