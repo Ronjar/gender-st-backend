@@ -1,4 +1,4 @@
-FROM openjdk:latest
+FROM openjdk:20-slim
 WORKDIR /app
 COPY gender-st.jar /app/gender-st.jar
 EXPOSE 80
