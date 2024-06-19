@@ -22,7 +22,7 @@ fun Application.configureRouting() {
         }
         post("/adduser") {
             val user = call.receive<User>()
-            user.ipAdress = call.request.origin.remoteAddress
+            user.ipAddress = call.request.origin.remoteAddress
             call.respond(UserResponse(userDAO.addUser(user), combinator.next()))
         }
         post("/addset") {
@@ -30,6 +30,9 @@ fun Application.configureRouting() {
             dataSetDAO.addDataSet(dataSet)
             val count = dataSetDAO.getNumberOfSets(dataSet.userId)
             call.respond(DataSetResponse(count))
+        }
+        get("/stats"){
+            call.respond(StatResponse(userDAO.getAllUsers().size, dataSetDAO.getDataSetCounts()))
         }
         get("/csv"){
             val csvData = generateCsv(userDAO.getAllUsers(), dataSetDAO.getAllDataSets())
@@ -43,3 +46,6 @@ data class UserResponse(val userId: Int, val gamifiedElements: List<String>)
 
 @Serializable
 data class DataSetResponse(val round: Int)
+
+@Serializable
+data class StatResponse(val users: Int, val dataSets: DataSetCounts)

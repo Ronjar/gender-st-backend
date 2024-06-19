@@ -1,0 +1,1 @@
+.loading-spinner.svelte-evac4{border:2px solid transparent;border-radius:50%;border-top:2px solid white;border-right:2px solid white;width:1em;height:1em;animation:svelte-evac4-spin 1s linear infinite}@keyframes svelte-evac4-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}
