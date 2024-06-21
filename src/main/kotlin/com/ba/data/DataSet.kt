@@ -1,6 +1,7 @@
 package com.ba.data
 
 import kotlinx.serialization.Serializable
+import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 
 @Serializable
@@ -9,7 +10,7 @@ data class DataSet(val userId: Int, val gamifiedElements: String, val stai: Arra
 object DataSets: Table(){
     val id = integer("id").autoIncrement()
     val gamifiedElements = varchar("gamified_elements", 5)
-    val userId = integer("user_id").references(Users.id)
+    val userId = integer("user_id").references(Users.id, onDelete = ReferenceOption.CASCADE)
     val staiTest = varchar("stai_test", 255)
     val ngseTest = varchar("ngse_test", 255)
     val simsTest = varchar("sims_test", 255)

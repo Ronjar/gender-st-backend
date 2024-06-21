@@ -6,9 +6,8 @@ import com.ba.data.Users.deletionCode
 import com.ba.data.Users.gender
 import com.ba.data.Users.ipAddress
 import com.ba.data.Users.studyProgram
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class UserDAO {
     private fun resultRowToUser(row: ResultRow) = User(
@@ -32,6 +31,14 @@ class UserDAO {
             it[ipAddress] = user.ipAddress
         }
         insertStatement get Users.id
+    }
+
+    suspend fun deleteByCode(deletionCode: String): Boolean = dbQuery {
+        Users.deleteWhere { Users.deletionCode eq deletionCode } > 0
+    }
+
+    suspend fun deleteEverything(): Boolean = dbQuery {
+        Users.deleteAll() > 0
     }
 }
 

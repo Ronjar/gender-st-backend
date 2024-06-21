@@ -10,6 +10,9 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun Application.configureRouting() {
     install(Resources)
@@ -23,7 +26,7 @@ fun Application.configureRouting() {
         post("/adduser") {
             val user = call.receive<User>()
             user.ipAddress = call.request.origin.remoteAddress
-            call.respond(UserResponse(userDAO.addUser(user), combinator.next()))
+            call.respond(UserResponse(userDAO.addUser(user), combinator.next()/* listOf("b", "pblan", "p")*/))
         }
         post("/addset") {
             val dataSet = call.receive<DataSet>()
@@ -31,12 +34,41 @@ fun Application.configureRouting() {
             val count = dataSetDAO.getNumberOfSets(dataSet.userId)
             call.respond(DataSetResponse(count))
         }
-        get("/stats"){
+        delete("/removeuser/{id}") {
+            val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+            call.respond(userDAO.deleteByCode(id))
+        }
+        delete("/everything"){
+            call.respond(userDAO.deleteEverything())
+        }
+        get("/stats") {
             call.respond(StatResponse(userDAO.getAllUsers().size, dataSetDAO.getDataSetCounts()))
         }
-        get("/csv"){
+        get("/csv") {
             val csvData = generateCsv(userDAO.getAllUsers(), dataSetDAO.getAllDataSets())
             call.respondText(csvData, ContentType.Text.CSV)
+        }
+        get("/backup") {
+            val dbFile = File("/data/db.mv.db")
+            if (dbFile.exists()) {
+                val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                val backupFileName = "backup_${timeStamp}_db.mv.db"
+                val backupFile = File("/data/$backupFileName")
+                dbFile.copyTo(backupFile, overwrite = true)
+                call.respondText("Backup created successfully: $backupFileName", status = HttpStatusCode.OK)
+            } else {
+                call.respondText("Database file not found.", status = HttpStatusCode.NotFound)
+            }
+        }
+
+        get("/download") {
+            val dbFile = File("/data/db.mv.db")
+            if (dbFile.exists()) {
+                call.response.header(HttpHeaders.ContentDisposition, "attachment; filename=\"db.mv.db\"")
+                call.respondFile(dbFile)
+            } else {
+                call.respondText("Database file not found.", status = HttpStatusCode.NotFound)
+            }
         }
     }
 }
