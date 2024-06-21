@@ -1,1 +1,0 @@
-import{s as n,o as s}from"../chunks/scheduler.PLrrrlXJ.js";import{S as e,i as a}from"../chunks/index.n3p5PKkv.js";import{g as r}from"../chunks/entry.BfT9IUmm.js";function i(o){return s(async()=>{r("/privacy")}),[]}class u extends e{constructor(t){super(),a(this,t,i,null,n,{})}}export{u as component};
