@@ -1,6 +1,7 @@
 package com.ba.plugins
 
 import com.ba.data.*
+import com.ba.serverScope
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
@@ -9,6 +10,7 @@ import io.ktor.server.request.*
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.cancel
 import kotlinx.serialization.Serializable
 import java.io.File
 import java.text.SimpleDateFormat
@@ -34,18 +36,27 @@ fun Application.configureRouting() {
             val count = dataSetDAO.getNumberOfSets(dataSet.userId)
             call.respond(DataSetResponse(count))
         }
-        delete("/removeuser/{id}") {
-            val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
-            call.respond(userDAO.deleteByCode(id))
+        delete("/removeuser/{code}") {
+            val code = call.parameters["code"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+            if (userDAO.deleteByCode(code)){
+                call.respond(HttpStatusCode.OK)
+            } else{
+                call.respond(HttpStatusCode.NotFound)
+            }
         }
         delete("/everything"){
-            call.respond(userDAO.deleteEverything())
+            if (File("/data/db.mv.db").delete()){
+                call.respond("Database deleted successfully. Please restart container")
+            } else {
+                call.respond(HttpStatusCode.InternalServerError)
+            }
+            serverScope.cancel()
         }
         get("/stats") {
             call.respond(StatResponse(userDAO.getAllUsers().size, dataSetDAO.getDataSetCounts()))
         }
         get("/csv") {
-            val csvData = generateCsv(userDAO.getAllUsers(), dataSetDAO.getAllDataSets())
+            val csvData = generateCsv(userDAO.getAllUsersWithId(), dataSetDAO.getAllDataSets())
             call.respondText(csvData, ContentType.Text.CSV)
         }
         get("/backup") {
@@ -61,7 +72,7 @@ fun Application.configureRouting() {
             }
         }
 
-        get("/download") {
+        get("/downloaddb") {
             val dbFile = File("/data/db.mv.db")
             if (dbFile.exists()) {
                 call.response.header(HttpHeaders.ContentDisposition, "attachment; filename=\"db.mv.db\"")

@@ -2028,3 +2028,15 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/robin/D
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
 	... 40 more
+2024-06-21 10:40:14.647923+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "USERS" nicht gefunden (diese Datenbank ist leer)
+Table "USERS" not found (this database is empty); SQL statement:
+SELECT USERS.ID, USERS.GENDER, USERS.AGE, USERS."studyProgram", USERS."deletionCode", USERS."ipAddress" FROM USERS [42104-224]
+2024-06-21 10:56:39.631071+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "USERS" nicht gefunden (diese Datenbank ist leer)
+Table "USERS" not found (this database is empty); SQL statement:
+SELECT USERS.ID, USERS.GENDER, USERS.AGE, USERS."studyProgram", USERS."deletionCode", USERS."ipAddress" FROM USERS [42104-224]
+2024-06-21 10:57:12.850394+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabelle "USERS" nicht gefunden (diese Datenbank ist leer)
+Table "USERS" not found (this database is empty); SQL statement:
+SELECT USERS.ID, USERS.GENDER, USERS.AGE, USERS."studyProgram", USERS."deletionCode", USERS."ipAddress" FROM USERS [42104-224]

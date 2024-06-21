@@ -6,6 +6,9 @@ import org.jetbrains.exposed.sql.Table
 @Serializable
 data class User(val gender: String, val age: Int, val studyProgram: String, val deletionCode: String, var ipAddress: String = "")
 
+@Serializable
+data class UserWithId(val id: Int, val gender: String, val age: Int, val studyProgram: String, val deletionCode: String, var ipAddress: String = "")
+
 
 object Users: Table(){
     val id = integer("id").autoIncrement()

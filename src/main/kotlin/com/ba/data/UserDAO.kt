@@ -4,6 +4,7 @@ import com.ba.data.DatabaseFactory.dbQuery
 import com.ba.data.Users.age
 import com.ba.data.Users.deletionCode
 import com.ba.data.Users.gender
+import com.ba.data.Users.id
 import com.ba.data.Users.ipAddress
 import com.ba.data.Users.studyProgram
 import org.jetbrains.exposed.sql.*
@@ -17,9 +18,20 @@ class UserDAO {
         deletionCode = row[deletionCode],
         ipAddress = row[ipAddress]
     )
+    private fun resultRowToUserWithId(row: ResultRow) = UserWithId(
+        id = row[id],
+        gender = row[gender],
+        age = row[age],
+        studyProgram = row[studyProgram],
+        deletionCode = row[deletionCode],
+        ipAddress = row[ipAddress]
+    )
 
     suspend fun getAllUsers(): List<User> = dbQuery {
         Users.selectAll().map(::resultRowToUser)
+    }
+    suspend fun getAllUsersWithId(): List<UserWithId> = dbQuery {
+        Users.selectAll().map(::resultRowToUserWithId)
     }
 
     suspend fun addUser(user: User): Int = dbQuery {
