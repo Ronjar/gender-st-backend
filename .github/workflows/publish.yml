@@ -14,5 +14,5 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build the gender-st Docker image
         run: |
-          docker build . --tag ghcr.io/ronjar/gender-st:latest
-          docker push ghcr.io/ronjar/gender-st:latest
+          docker build . --tag ghcr.io/ronjar/gender-st-backend:latest
+          docker push ghcr.io/ronjar/gender-st-backend:latest
