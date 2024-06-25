@@ -16,7 +16,7 @@ class DataSetDAO {
         stai = row[DataSets.staiTest].split("|").map { it.trim().toInt() }.toTypedArray(),
         ngse = row[DataSets.ngseTest].split("|").map { it.trim().toInt() }.toTypedArray(),
         sims = row[DataSets.simsTest].split("|").map { it.trim().toInt() }.toTypedArray(),
-        questions = row[DataSets.questions].split("|").map { it.trim().toInt() == 0 }.toTypedArray(),
+        questions = row[DataSets.questions].split("|").map { it.trim().toInt() == 1 }.toTypedArray(),
         answerTime = row[DataSets.answerTime].split("|").map { it.trim().toInt() }.toTypedArray(),
     )
 
@@ -46,7 +46,7 @@ class DataSetDAO {
 
     suspend fun getDataSetCounts(): DataSetCounts = dbQuery {
         val x = DataSets
-            .select { DataSets.gamifiedElements eq "x" }
+            .select { DataSets.gamifiedElements eq "" }
             .count().toInt()
 
         val p = DataSets

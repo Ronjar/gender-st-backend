@@ -6,7 +6,7 @@ fun generateCsv(users: List<UserWithId>, dataSets: List<DataSet>): String {
     stringBuilder.append(header.joinToString(";")).append("\n")
 
     users.forEach { user ->
-        val userRows = dataSets.filter { it.userId == user.id }.sortedBy { it.gamifiedElements }
+        val userRows = dataSets.filter { it.userId == user.id }
         val row = mutableListOf(
             user.id.toString(),
             user.gender,
