@@ -36,8 +36,8 @@ fun generateHeader(): Array<String> {
         for (j in 1..20) header.add("r${i}_q_$j")
         for (j in 1..20) header.add("r${i}_time_$j")
         for (j in 1..6) header.add("r${i}_stai_$j")
-        for (j in 1..16) header.add("r${i}_ngse_$j")
-        for (j in 1..8) header.add("r${i}_sims_$j")
+        for (j in 1..8) header.add("r${i}_ngse_$j")
+        for (j in 1..16) header.add("r${i}_sims_$j")
     }
     return header.toTypedArray()
 }
